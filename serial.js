@@ -128,9 +128,9 @@ async function sendCommand(commandArray) {
         // Calculate CRC16 for the sliced payload
         const crc = crc16(new Uint8Array(commandPayload));
 
-        // Set the CRC in the last two bytes of the original command array
-        commandArray[commandArray.length - 2] = crc & 0xFF;
-        commandArray[commandArray.length - 1] = (crc >> 8) & 0xFF;
+        // Set the CRC in the last two bytes of the original command array with swapped order
+        commandArray[commandArray.length - 2] = (crc >> 8) & 0xFF;  // Higher byte first
+        commandArray[commandArray.length - 1] = crc & 0xFF;         // Lower byte second
 
         // Send the command using the serial port writer
         const payload = new Uint8Array(commandArray);
