@@ -115,12 +115,24 @@ function crc16(bytes) {
 
 async function sendCommand(commandArray) {
     if (writer) {
-        const commandPayload = commandArray.slice(0, commandArray.length - 2);
+        // Find the end index for the CRC calculation, identified by the sequence [16, 3]
+        let endIndex = commandArray.indexOf(16, 2); // Start searching from index 2
+        while (endIndex !== -1 && commandArray[endIndex + 1] !== 3) {
+            endIndex = commandArray.indexOf(16, endIndex + 1);
+        }
+
+        // Slice the command array starting from index 2 to the found endIndex
+        // or to the entire length of the array if [16, 3] is not found
+        const commandPayload = commandArray.slice(2, endIndex === -1 ? commandArray.length : endIndex);
+
+        // Calculate CRC16 for the sliced payload
         const crc = crc16(new Uint8Array(commandPayload));
 
+        // Set the CRC in the last two bytes of the original command array
         commandArray[commandArray.length - 2] = crc & 0xFF;
         commandArray[commandArray.length - 1] = (crc >> 8) & 0xFF;
 
+        // Send the command using the serial port writer
         const payload = new Uint8Array(commandArray);
         console.log('Sending command:', payload);
         await writer.write(payload);
