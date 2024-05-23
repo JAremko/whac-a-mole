@@ -1,5 +1,15 @@
 [
     {
+        "id": "calibrate",
+        "label": "Calibrate",
+        "data": [16, 2, 244, 2, 1, 0, 0, 3, 0, 0, 100, 128, 0, 0, 16, 3, 226, 216]
+    },
+    {
+        "id": "autoFocus",
+        "label": "Auto Focus",
+        "data": [16, 2, 65, 2, 4, 0, 64, 0, 0, 0, 16, 3, 226, 216]
+    },
+    {
         "id": "sendZoom1xBlackHot",
         "label": "Zoom 1x/ Black Hot",
         "data": [16, 2, 244, 2, 0, 32, 0, 0, 100, 16, 3, 126, 114]
