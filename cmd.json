@@ -10,36 +10,6 @@
         "data": [16, 2, 65, 2, 4, 0, 64, 0, 0, 0, 16, 3, 226, 216]
     },
     {
-        "id": "sendZoom1xBlackHot",
-        "label": "Zoom 1x/ Black Hot",
-        "data": [16, 2, 244, 2, 0, 32, 0, 0, 100, 16, 3, 126, 114]
-    },
-    {
-        "id": "sendZoom2xBlackHot",
-        "label": "Zoom 2x/ Black Hot",
-        "data": [16, 2, 244, 2, 0, 32, 0, 0, 200, 16, 3, 10, 20]
-    },
-    {
-        "id": "sendZoom4xBlackHot",
-        "label": "Zoom 4x/ Black Hot",
-        "data": [16, 2, 244, 2, 0, 32, 0, 1, 144, 16, 3, 226, 216]
-    },
-    {
-        "id": "sendZoom1xWhiteHot",
-        "label": "Zoom 1x/ White Hot",
-        "data": [16, 2, 244, 2, 32, 32, 0, 0, 100, 16, 3, 126, 114]
-    },
-    {
-        "id": "sendZoom2xWhiteHot",
-        "label": "Zoom 2x/ White Hot",
-        "data": [16, 2, 244, 2, 32, 32, 0, 0, 200, 16, 3, 10, 20]
-    },
-    {
-        "id": "sendZoom4xWhiteHot",
-        "label": "Zoom 4x/ White Hot",
-        "data": [16, 2, 244, 2, 32, 32, 0, 1, 144, 16, 3, 226, 216]
-    },
-    {
         "id": "sendWhiteHot",
         "label": "White Hot",
         "data": [16, 2, 244, 2, 32, 0, 0, 0, 0, 16, 3, 226, 216]
@@ -143,5 +113,35 @@
         "id": "sendMIDE15",
         "label": "MIDE - 15",
         "data": [16, 2, 247, 2, 0, 0, 0, 2, 15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 16, 3, 226, 216]
+    },
+    {
+        "id": "sendZoomWideBlackHot",
+        "label": "Zoom Wide / Black Hot",
+        "data": [16, 2, 244, 2, 0, 32, 0, 0, 100, 16, 3, 126, 114]
+    },
+    {
+        "id": "sendZoomMiddleBlackHot",
+        "label": "Zoom Middle / Black Hot",
+        "data": [16, 2, 244, 2, 0, 32, 0, 0, 200, 16, 3, 10, 20]
+    },
+    {
+        "id": "sendZoomNarrowBlackHot",
+        "label": "Zoom Narrow / Black Hot",
+        "data": [16, 2, 244, 2, 0, 32, 0, 1, 144, 16, 3, 226, 216]
+    },
+    {
+        "id": "sendZoomWideWhiteHot",
+        "label": "Zoom Wide / White Hot",
+        "data": [16, 2, 244, 2, 32, 32, 0, 0, 100, 16, 3, 126, 114]
+    },
+    {
+        "id": "sendZoomMiddleWhiteHot",
+        "label": "Zoom Middle / White Hot",
+        "data": [16, 2, 244, 2, 32, 32, 0, 0, 200, 16, 3, 10, 20]
+    },
+    {
+        "id": "sendZoomNarrowWhiteHot",
+        "label": "Zoom Narrow / White Hot",
+        "data": [16, 2, 244, 2, 32, 32, 0, 1, 144, 16, 3, 226, 216]
     }
 ]

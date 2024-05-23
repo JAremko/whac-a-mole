@@ -3,15 +3,45 @@ document.addEventListener('DOMContentLoaded', initializeApp);
 let port;
 let writer;
 let crcTable;
+let currentZoom = "Wide";  // Default to 'Wide'
+let currentColorMode = "White Hot";  // Default to 'White Hot'
 
 async function initializeApp() {
     if ("serial" in navigator) {
         CRC_table();
+        setupStateDependentButtons();
         await loadCommands();
         setupConnectButton();
     } else {
         displayNotSupportedError();
     }
+}
+
+function setupStateDependentButtons() {
+    const zoomContainer = document.createElement('div');
+    ['Wide', 'Middle', 'Narrow'].forEach(zoom => {
+        const button = document.createElement('button');
+        button.textContent = `Zoom ${zoom}`;
+        button.className = 'button';
+        button.addEventListener('click', () => {
+            setCurrentZoom(zoom);
+        });
+        zoomContainer.appendChild(button);
+    });
+
+    const colorModeContainer = document.createElement('div');
+    ['White Hot', 'Black Hot'].forEach(color => {
+        const button = document.createElement('button');
+        button.textContent = `${color}`;
+        button.className = 'button';
+        button.addEventListener('click', () => {
+            setCurrentColorMode(color);
+        });
+        colorModeContainer.appendChild(button);
+    });
+
+    document.body.insertBefore(zoomContainer, document.body.firstChild);
+    document.body.insertBefore(colorModeContainer, document.body.firstChild);
 }
 
 async function loadCommands() {
@@ -70,10 +100,42 @@ async function connectSerial() {
         console.log('Connected to the serial port');
         document.getElementById('connect').style.display = 'none';
         startReading();
+        setDefaultState(); // Set the default state when connected
     } catch (err) {
         console.error('There was an error opening the serial port:', err);
         alert('There was an error opening the serial port:', err);
     }
+}
+
+function setDefaultState() {
+    setCurrentZoom(currentZoom);
+    setCurrentColorMode(currentColorMode);
+}
+
+function setCurrentZoom(zoom) {
+    currentZoom = zoom;
+    sendZoomColorCommand();
+}
+
+function setCurrentColorMode(color) {
+    currentColorMode = color;
+    sendZoomColorCommand();
+}
+
+async function sendZoomColorCommand() {
+    const command = getCommandByState(currentZoom, currentColorMode);
+    const fullCommand = [...command, 0, 0]; // Append two bytes for CRC placeholders
+    sendCommand(fullCommand);
+}
+
+function getCommandByState(zoom, color) {
+    const commandBase = {
+        "Wide": 100,
+        "Middle": 200,
+        "Narrow": 144
+    };
+    const colorOffset = color === "White Hot" ? 32 : 0;
+    return [16, 2, 244, 2, colorOffset, 32, 0, zoom === "Narrow" ? 1 : 0, commandBase[zoom], 16, 3];
 }
 
 function enableCommandButtons(commands) {
