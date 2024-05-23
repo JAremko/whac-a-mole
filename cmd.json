@@ -15,6 +15,21 @@
         "data": [16, 2, 244, 2, 0, 32, 0, 1, 144, 16, 3, 226, 216]
     },
     {
+        "id": "sendZoom1xWhiteHot",
+        "label": "Zoom 1x/ White Hot",
+        "data": [16, 2, 244, 2, 32, 32, 0, 0, 100, 16, 3, 126, 114]
+    },
+    {
+        "id": "sendZoom2xWhiteHot",
+        "label": "Zoom 2x/ White Hot",
+        "data": [16, 2, 244, 2, 32, 32, 0, 0, 200, 16, 3, 10, 20]
+    },
+    {
+        "id": "sendZoom4xWhiteHot",
+        "label": "Zoom 4x/ White Hot",
+        "data": [16, 2, 244, 2, 32, 32, 0, 1, 144, 16, 3, 226, 216]
+    },
+    {
         "id": "sendWhiteHot",
         "label": "White Hot",
         "data": [16, 2, 244, 2, 32, 0, 0, 0, 0, 16, 3, 226, 216]
