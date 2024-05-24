@@ -42,7 +42,7 @@ function createButtons(container, options, prefix) {
 
 function updateButtonColors() {
     const buttons = document.querySelectorAll('.button');
-    const hues = [0, 45, 90, 135, 180, 225, 270, 315, 360];
+    const hues = [15, 45, 90, 135, 180, 225, 270, 315, 355];
     const numberOfButtons = buttons.length;
 
     buttons.forEach((button, index) => {
