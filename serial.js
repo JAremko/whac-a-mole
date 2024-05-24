@@ -42,15 +42,18 @@ function createButtons(container, options, prefix) {
 
 function updateButtonColors() {
     const buttons = document.querySelectorAll('.button');
+    const hues = [0, 45, 90, 135, 180, 225, 270, 315, 360];
     const numberOfButtons = buttons.length;
+
     buttons.forEach((button, index) => {
-        const hue = (360 / numberOfButtons) * index;
-        const backgroundColor = `hsl(${hue}, 70%, 50%)`;
-        const textColor = `hsl(${hue}, 30%, 90%)`;
+        const hueIndex = index % hues.length;
+        const hue = hues[hueIndex];
+        const backgroundColor = `hsl(${hue}, 100%, 50%)`;
+        const textColor = `hsl(${hue}, 100%, 85%)`;
 
         button.style.backgroundColor = backgroundColor;
         button.style.color = textColor;
-        button.style.textShadow = `1px 1px 2px rgba(0, 0, 0, 0.3), -1px -1px 2px rgba(255, 255, 255, 0.5)`;
+        button.style.textShadow = `1px 1px 2px rgba(0, 0, 0, 0.7), -1px -1px 2px rgba(255, 255, 255, 0.4)`;
     });
 }
 
