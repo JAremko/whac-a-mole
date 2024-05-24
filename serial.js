@@ -42,13 +42,17 @@ function createButtons(container, options, prefix) {
 
 function updateButtonColors() {
     const buttons = document.querySelectorAll('.button');
-    const hues = [15, 45, 90, 135, 180, 225, 270, 315, 355];
-    const numberOfButtons = buttons.length;
+    let hues = [15, 45, 90, 135, 180, 225, 270, 315, 355];
+
+    for (let i = hues.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [hues[i], hues[j]] = [hues[j], hues[i]];
+    }
 
     buttons.forEach((button, index) => {
         const hueIndex = index % hues.length;
         const hue = hues[hueIndex];
-        const backgroundColor = `hsl(${hue}, 100%, 50%)`;
+        const backgroundColor = `hsl(${hue}, 80%, 40%)`;
         const textColor = `hsl(${hue}, 100%, 85%)`;
 
         button.style.backgroundColor = backgroundColor;
