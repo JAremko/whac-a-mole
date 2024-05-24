@@ -3,8 +3,8 @@ document.addEventListener('DOMContentLoaded', initializeApp);
 let port;
 let writer;
 let crcTable;
-let currentZoom = "Wide";  // Default to 'Wide'
-let currentColorMode = "White Hot";  // Default to 'White Hot'
+let currentZoom = "Wide";
+let currentColorMode = "White Hot";
 
 async function initializeApp() {
     if ("serial" in navigator) {
@@ -18,30 +18,40 @@ async function initializeApp() {
 }
 
 function setupStateDependentButtons() {
-    const zoomContainer = document.createElement('div');
-    ['Wide', 'Middle', 'Narrow'].forEach(zoom => {
+    const controlButtonsDiv = document.getElementById('controlButtons');
+    createButtons(controlButtonsDiv, ['Wide', 'Middle', 'Narrow'], 'Zoom');
+    createButtons(controlButtonsDiv, ['White Hot', 'Black Hot'], '');
+}
+
+function createButtons(container, options, prefix) {
+    options.forEach(option => {
         const button = document.createElement('button');
-        button.textContent = `Zoom ${zoom}`;
+        button.textContent = prefix ? `${prefix} ${option}` : option;
         button.className = 'button';
         button.addEventListener('click', () => {
-            setCurrentZoom(zoom);
+            if (prefix === 'Zoom') {
+                setCurrentZoom(option);
+            } else {
+                setCurrentColorMode(option);
+            }
         });
-        zoomContainer.appendChild(button);
+        container.appendChild(button);
     });
+    updateButtonColors();
+}
 
-    const colorModeContainer = document.createElement('div');
-    ['White Hot', 'Black Hot'].forEach(color => {
-        const button = document.createElement('button');
-        button.textContent = `${color}`;
-        button.className = 'button';
-        button.addEventListener('click', () => {
-            setCurrentColorMode(color);
-        });
-        colorModeContainer.appendChild(button);
+function updateButtonColors() {
+    const buttons = document.querySelectorAll('.button');
+    const numberOfButtons = buttons.length;
+    buttons.forEach((button, index) => {
+        const hue = (360 / numberOfButtons) * index;
+        const backgroundColor = `hsl(${hue}, 70%, 50%)`;
+        const textColor = `hsl(${hue}, 30%, 90%)`;
+
+        button.style.backgroundColor = backgroundColor;
+        button.style.color = textColor;
+        button.style.textShadow = `1px 1px 2px rgba(0, 0, 0, 0.3), -1px -1px 2px rgba(255, 255, 255, 0.5)`;
     });
-
-    document.body.insertBefore(zoomContainer, document.body.firstChild);
-    document.body.insertBefore(colorModeContainer, document.body.firstChild);
 }
 
 async function loadCommands() {
@@ -52,6 +62,19 @@ async function loadCommands() {
     } catch (error) {
         console.error('Failed to load command configuration:', error);
     }
+}
+
+function enableCommandButtons(commands) {
+    const controlButtonsDiv = document.getElementById('controlButtons');
+    commands.forEach(command => {
+        const button = document.createElement('button');
+        button.id = command.id;
+        button.textContent = command.label;
+        button.className = 'button';
+        button.addEventListener('click', () => sendCommand(command.data));
+        controlButtonsDiv.appendChild(button);
+    });
+    updateButtonColors();
 }
 
 function setupConnectButton() {
@@ -100,7 +123,7 @@ async function connectSerial() {
         console.log('Connected to the serial port');
         document.getElementById('connect').style.display = 'none';
         startReading();
-        setDefaultState(); // Set the default state when connected
+        setDefaultState();
     } catch (err) {
         console.error('There was an error opening the serial port:', err);
         alert('There was an error opening the serial port:', err);
@@ -136,19 +159,6 @@ function getCommandByState(zoom, color) {
     };
     const colorOffset = color === "White Hot" ? 32 : 0;
     return [16, 2, 244, 2, colorOffset, 32, 0, zoom === "Narrow" ? 1 : 0, commandBase[zoom], 16, 3];
-}
-
-function enableCommandButtons(commands) {
-    const container = document.createElement('div');
-    commands.forEach(command => {
-        const button = document.createElement('button');
-        button.id = command.id;
-        button.textContent = command.label;
-        button.className = 'button';
-        button.addEventListener('click', () => sendCommand(command.data));
-        container.appendChild(button);
-    });
-    document.body.appendChild(container);
 }
 
 function CRC_table() {

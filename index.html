@@ -6,6 +6,43 @@
     <title>Serial Device Control</title>
     <link rel="stylesheet" href="bulma.css">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <style>
+        .card {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 960px;
+        }
+
+        .button-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .button {
+            padding: 10px 15px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 4px #999;
+        }
+
+        .button:hover {
+            box-shadow: 0 5px #666;
+            transform: translateY(2px);
+        }
+
+        .button:active {
+            box-shadow: 0 2px #666;
+            transform: translateY(4px);
+        }
+    </style>
     <script src="serial.js" defer></script>
 </head>
 <body>
@@ -14,7 +51,7 @@
             <div id="connectContainer">
                 <!-- Connect button will be injected by JavaScript -->
             </div>
-            <div id="controlButtons" style="margin-top: 20px;">
+            <div id="controlButtons" class="card button-grid">
                 <!-- Control buttons will be injected by JavaScript -->
             </div>
         </div>
