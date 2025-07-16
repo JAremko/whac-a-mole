@@ -18,7 +18,13 @@
 
         .button-grid {
             display: flex;
-            flex-wrap: wrap;
+            flex-direction: column; /* Arrange rows vertically */
+            align-items: center; /* Center rows horizontally */
+            gap: 10px;
+        }
+
+        .button-row {
+            display: flex;
             justify-content: center;
             gap: 10px;
         }
