@@ -1,3 +1,6 @@
+import { commandDefinitions, buttonConfigs } from './commands.js';
+import { debugLogger } from './debug-logger.js';
+
 document.addEventListener('DOMContentLoaded', initializeApp);
 
 let port;
@@ -63,25 +66,44 @@ function updateButtonColors() {
 
 async function loadCommands() {
     try {
-        const response = await fetch('cmd.json');
-        const commands = await response.json();
-        enableCommandButtons(commands);
+        enableCommandButtons(buttonConfigs);
     } catch (error) {
         console.error('Failed to load command configuration:', error);
     }
 }
 
-function enableCommandButtons(commands) {
+function enableCommandButtons(buttonConfigs) {
     const controlButtonsDiv = document.getElementById('controlButtons');
-    commands.forEach(command => {
+    buttonConfigs.forEach(config => {
         const button = document.createElement('button');
-        button.id = command.id;
-        button.textContent = command.label;
+        button.id = config.id;
+        button.textContent = config.label;
         button.className = 'button';
-        button.addEventListener('click', () => sendCommand(command.data));
+        button.addEventListener('click', () => executeCommandChain(config.commands, config.id));
         controlButtonsDiv.appendChild(button);
     });
     updateButtonColors();
+}
+
+async function executeCommandChain(commands, buttonId) {
+    debugLogger.logCommandChain(buttonId, commands);
+    
+    for (const item of commands) {
+        if (item.delay) {
+            // Wait for the specified delay
+            console.log(`Waiting ${item.delay}ms...`);
+            await new Promise(resolve => setTimeout(resolve, item.delay));
+        } else if (item.command) {
+            // Look up the command definition and send it
+            const cmdDef = commandDefinitions[item.command];
+            if (cmdDef) {
+                console.log(`Executing command: ${item.command}`);
+                await sendCommand(cmdDef.data, item.command);
+            } else {
+                console.error(`Command not found: ${item.command}`);
+            }
+        }
+    }
 }
 
 function setupConnectButton() {
@@ -107,7 +129,9 @@ async function startReading() {
                 console.log('Stream closed');
                 break;
             }
-            console.log('Received:', textDecoder.decode(value));
+            const decodedValue = textDecoder.decode(value);
+            console.log('Received:', decodedValue);
+            debugLogger.logSerialReceive(decodedValue);
         }
     } catch (error) {
         console.error('Error reading from serial port:', error);
@@ -192,7 +216,7 @@ function crc16(bytes) {
     return crc;
 }
 
-async function sendCommand(commandArray) {
+async function sendCommand(commandArray, commandName = 'Unknown') {
     if (writer) {
         // Find the end index for the CRC calculation, identified by the sequence [16, 3]
         let endIndex = commandArray.indexOf(16, 2); // Start searching from index 2
@@ -214,6 +238,7 @@ async function sendCommand(commandArray) {
         // Send the command using the serial port writer
         const payload = new Uint8Array(commandArray);
         console.log('Sending command:', payload);
+        debugLogger.logSerialSend(commandName, payload);
         await writer.write(payload);
         console.log('Command sent:', payload);
     } else {

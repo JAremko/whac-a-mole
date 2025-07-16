@@ -1,0 +1,33 @@
+{
+  "name": "whac-a-mole-serial-controller",
+  "version": "1.0.0",
+  "description": "Web-based serial device controller with debug logging for AI agents and automation",
+  "main": "index.html",
+  "scripts": {
+    "start": "serve -p 8000 .",
+    "dev": "serve -p 8000 . -o",
+    "debug": "node server.js",
+    "serve:python": "python3 -m http.server 8000",
+    "serve:php": "php -S localhost:8000",
+    "test": "echo \"No tests configured\" && exit 0"
+  },
+  "keywords": [
+    "serial",
+    "web-serial-api",
+    "hardware",
+    "thermal-imaging",
+    "device-control"
+  ],
+  "author": "",
+  "license": "GPL-3.0",
+  "devDependencies": {
+    "serve": "^14.2.0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/whac-a-mole.git"
+  }
+}
